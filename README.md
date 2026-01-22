@@ -1,7 +1,7 @@
 
 # Goodtocode.Validation
 
-[![NuGet CI/CD](https://github.com/goodtocode/aspect-validator/actions/workflows/gtc-validator-nuget.yml/badge.svg)](https://github.com/goodtocode/aspect-validator/actions/workflows/gtc-validator-nuget.yml)
+[![NuGet CI/CD](https://github.com/goodtocode/aspect-validation/actions/workflows/gtc-validation-nuget.yml/badge.svg)](https://github.com/goodtocode/aspect-validation/actions/workflows/gtc-validation-nuget.yml)
 
 Goodtocode.Validation is a lightweight, dependency-free validation library for .NET, designed for use in CQRS, Clean Architecture, and modern .NET applications. It provides a fluent API for defining validation rules for commands, queries, DTOs, and more.
 
