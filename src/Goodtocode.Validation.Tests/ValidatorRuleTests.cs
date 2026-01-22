@@ -11,10 +11,8 @@ public class ValidatorRuleTests
         public DateTime EndDate { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public TestEnum Status { get; set; }
+        public TestStatus Status { get; set; }
     }
-
-    public enum TestEnum { None = 0, Active = 1, Inactive = 2 }
 
     public class TestEntityValidator : Validator<TestEntity>
     {
@@ -41,7 +39,7 @@ public class ValidatorRuleTests
             EndDate = DateTime.Today.AddDays(1),
             PageNumber = 1,
             PageSize = 10,
-            Status = TestEnum.Active
+            Status = TestStatus.Active
         };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
@@ -52,7 +50,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidateNameEmptyReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -62,7 +60,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidateAgeZeroReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "John", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -72,7 +70,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidateStartDateGreaterThanEndDateReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today.AddDays(2), EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today.AddDays(2), EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -82,7 +80,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidateEndDateLessThanStartDateReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(-1), PageNumber = 1, PageSize = 10, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(-1), PageNumber = 1, PageSize = 10, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -92,7 +90,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidatePageNumberZeroReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 10, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 10, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -102,7 +100,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidatePageSizeZeroReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 0, Status = TestEnum.Active };
+        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 0, Status = TestStatus.Active };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
@@ -112,7 +110,7 @@ public class ValidatorRuleTests
     [TestMethod]
     public void ValidateStatusNotInEnumReturnsInvalid()
     {
-        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = (TestEnum)99 };
+        var entity = new TestEntity { Name = "John", Age = 25, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 1, PageSize = 10, Status = (TestStatus)99 };
         var validator = new TestEntityValidator();
         var result = validator.Validate(entity);
         Assert.IsFalse(result.IsValid);
