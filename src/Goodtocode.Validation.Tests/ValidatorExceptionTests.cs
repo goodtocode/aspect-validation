@@ -6,7 +6,7 @@ public class ValidatorExceptionTests
     [TestMethod]
     public void ValidateAndThrowInvalidThrowsCustomValidationException()
     {
-        var entity = new ValidatorRuleTests.TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (ValidatorRuleTests.TestEnum)99 };
+        var entity = new ValidatorRuleTests.TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (ValidatorRuleTests.TestEnumeration)99 };
         var validator = new ValidatorRuleTests.TestEntityValidator();
         Assert.ThrowsException<CustomValidationException>(() => validator.ValidateAndThrow(entity));
     }
