@@ -11,10 +11,8 @@ public class ValidatorAsyncTests
         public DateTime EndDate { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public TestEnum Status { get; set; }
+        public TestStatus Status { get; set; }
     }
-
-    public enum TestEnum { None = 0, Active = 1, Inactive = 2 }
 
     public class TestEntityValidator : Validator<TestEntity>
     {
@@ -41,7 +39,7 @@ public class ValidatorAsyncTests
             EndDate = DateTime.Today.AddDays(1),
             PageNumber = 1,
             PageSize = 10,
-            Status = TestEnum.Active
+            Status = TestStatus.Active
         };
         var validator = new TestEntityValidator();
         var result = await validator.ValidateAsync(entity);
@@ -51,7 +49,7 @@ public class ValidatorAsyncTests
     [TestMethod]
     public async Task ValidateAndThrowAsyncInvalidThrowsCustomValidationException()
     {
-        var entity = new TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (TestEnum)99 };
+        var entity = new TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (TestStatus)99 };
         var validator = new TestEntityValidator();
         await Assert.ThrowsExceptionAsync<CustomValidationException>(async () => await validator.ValidateAndThrowAsync(entity));
     }
