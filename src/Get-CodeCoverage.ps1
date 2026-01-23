@@ -41,7 +41,7 @@ foreach ($project in $testProjects) {
     $testProjectPath = $project.FullName
     Write-Host "Running tests for project: $($testProjectPath)"
 
-    $buildOutput = Join-Path -Path $project.Directory.FullName -ChildPath "bin\Debug\net9.0\$($project.BaseName).dll"
+    $buildOutput = Join-Path -Path $project.Directory.FullName -ChildPath "bin\Debug\net10.0\$($project.BaseName).dll"
     $coverageFile = Join-Path $coverageOutputPath "coverage.cobertura.xml"
     Write-Host "Analyzing code coverage for: $buildOutput"
     coverlet $buildOutput --target "dotnet" --targetargs "test $($project.FullName) --no-build" --format cobertura --output $coverageFile
