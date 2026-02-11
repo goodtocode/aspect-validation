@@ -87,8 +87,16 @@ jobs:
 
       - name: Test
         run: |
+          dotnet test ${{ env.SRC_PATH }}/${{ env.TEST_PATH }}/${{ env.TEST_PROJECT }} --verbosity normal
+        shell: pwsh
+
+      - name: Copy test results
+        if: ${{ always() }}
+        run: |
           mkdir -p TestResults-${{ matrix.DOTNET_VERSION }}
-          dotnet test ${{ env.SRC_PATH }}/${{ env.TEST_PATH }}/${{ env.TEST_PROJECT }} --logger "trx;LogFileName=TestResults-${{ matrix.DOTNET_VERSION }}/test-results.trx" --code-coverage --verbosity normal
+          if (Test-Path "${{ env.SRC_PATH }}/${{ env.TEST_PATH }}/TestResults") {
+            Copy-Item -Path "${{ env.SRC_PATH }}/${{ env.TEST_PATH }}/TestResults/*" -Destination "TestResults-${{ matrix.DOTNET_VERSION }}" -Recurse -Force
+          }
         shell: pwsh
 
       - name: Upload test results
