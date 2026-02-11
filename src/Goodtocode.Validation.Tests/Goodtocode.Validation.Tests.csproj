@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+    <VSTestUseMSBuildOutput>false</VSTestUseMSBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
