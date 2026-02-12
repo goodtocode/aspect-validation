@@ -38,7 +38,6 @@ env:
   SRC_SLN: "Goodtocode.Validation.sln"
   TEST_PATH: "Goodtocode.Validation.Tests"
   TEST_PROJECT: "Goodtocode.Validation.Tests.csproj"
-
 jobs:
   ci:
     name: "NuGet CI"
@@ -99,7 +98,7 @@ jobs:
       - name: Test
         run: |
           cd ${{ env.SRC_PATH }}/${{ env.TEST_PATH }}
-          dotnet run --configuration Release --no-build
+          dotnet run --configuration ${{ env.CONFIGURATION }} --no-build
         shell: pwsh
 
       - name: Copy test results
@@ -135,11 +134,10 @@ jobs:
 
       - name: Run Coverage Script
         run: |
-          pwsh ${{ env.SRC_PATH }}/Get-CodeCoverage.ps1 `
+          pwsh ${{ env.SCRIPTS_PATH }}/ci/Get-CodeCoverage.ps1 `
             -TestProjectFilter '${{ env.TEST_PROJECT }}' `
-            -ProdPackagesOnly `
-            -ProductionAssemblies Core.Application Presentation.WebApi Presentation.Blazor `
-            -Configuration ${{ env.CONFIGURATION }}
+            -Configuration '${{ env.CONFIGURATION }}' `
+            -TestRootPath '${{ env.SRC_PATH }}'
         shell: pwsh
 
       - name: Upload Coverage Report
