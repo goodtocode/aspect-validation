@@ -8,7 +8,7 @@ public class ValidatorExceptionTests
     {
         var entity = new ValidatorRuleTests.TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (TestStatus)99 };
         var validator = new ValidatorRuleTests.TestEntityValidator();
-        Assert.ThrowsException<CustomValidationException>(() => validator.ValidateAndThrow(entity));
+        Assert.Throws<CustomValidationException>(() => validator.ValidateAndThrow(entity));
     }
 
     [TestMethod]

@@ -51,6 +51,6 @@ public class ValidatorAsyncTests
     {
         var entity = new TestEntity { Name = "", Age = 0, StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), PageNumber = 0, PageSize = 0, Status = (TestStatus)99 };
         var validator = new TestEntityValidator();
-        await Assert.ThrowsExceptionAsync<CustomValidationException>(async () => await validator.ValidateAndThrowAsync(entity));
+        await Assert.ThrowsAsync<CustomValidationException>(async () => await validator.ValidateAndThrowAsync(entity));
     }
 }
