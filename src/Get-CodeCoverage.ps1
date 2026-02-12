@@ -13,9 +13,8 @@
 Param(
     [string]$TestProjectFilter = '*.Tests.csproj',    
     [switch]$ProdPackagesOnly = $false,    
-    [string[]]$ProductionAssemblies = @(
-        "Goodtocode.Validation"
-    )
+    [string[]]$ProductionAssemblies = @(),
+    [string]$Configuration = 'Release'
 )
 ####################################################################################
 if ($IsWindows) {Set-ExecutionPolicy Unrestricted -Scope Process -Force}
@@ -43,7 +42,7 @@ foreach ($project in $testProjects) {
     # Use 'dotnet run' instead of 'dotnet test' for MSTest runner projects
     # This bypasses the VSTest target that's incompatible with .NET 10 SDK
     Push-Location $project.DirectoryName
-    & dotnet run --configuration Debug --no-build -- --coverage
+    & dotnet run --configuration $Configuration --no-build -- --coverage
     Pop-Location
 }
 
