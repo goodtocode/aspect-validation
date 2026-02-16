@@ -116,4 +116,49 @@ public class ValidatorRuleTests
         Assert.IsFalse(result.IsValid);
         Assert.IsTrue(result.Errors.Any(e => e.PropertyName == "Status"));
     }
+
+    [TestMethod]
+    public void ValidateWhenConditionTrueOnlyAppliesRule()
+    {
+        // Rule: Name must not be empty, but only when Age > 18
+        var rules = new List<Func<TestEntity, ValidationFailure?>>();
+        var builder = new RuleBuilder<TestEntity, string>(x => x.Name, nameof(TestEntity.Name), rules)
+            .NotEmpty()
+            .When(x => x.Age > 18);
+
+        var entity = new TestEntity { Name = "", Age = 20 };
+        // Should fail because Age > 18 and Name is empty
+        var failure = rules.Select(r => r(entity)).FirstOrDefault(f => f != null);
+        Assert.IsNotNull(failure);
+        Assert.AreEqual("Name", failure.PropertyName);
+
+        entity = new TestEntity { Name = "", Age = 15 };
+        // Should pass (no failure) because Age <= 18, so rule is not applied
+        failure = rules.Select(r => r(entity)).FirstOrDefault(f => f != null);
+        Assert.IsNull(failure);
+    }
+
+    [TestMethod]
+    public void ValidateWhenWithErrorMessageReturnsCustomError()
+    {
+        // Rule: Name must not be empty, but if Age <= 18, return custom error
+        var rules = new List<Func<TestEntity, ValidationFailure?>>();
+        var builder = new RuleBuilder<TestEntity, string>(x => x.Name, nameof(TestEntity.Name), rules)
+            .NotEmpty()
+            .When(x => x.Age > 18, "Name validation skipped for minors");
+
+        var entity = new TestEntity { Name = "", Age = 15 };
+        // Should return the custom error message because Age <= 18
+        var failure = rules.Select(r => r(entity)).FirstOrDefault(f => f != null);
+        Assert.IsNotNull(failure);
+        Assert.AreEqual("Name", failure.PropertyName);
+        Assert.AreEqual("Name validation skipped for minors", failure.ErrorMessage);
+
+        entity = new TestEntity { Name = "", Age = 20 };
+        // Should fail with the NotEmpty error because Age > 18 and Name is empty
+        failure = rules.Select(r => r(entity)).FirstOrDefault(f => f != null);
+        Assert.IsNotNull(failure);
+        Assert.AreEqual("Name", failure.PropertyName);
+        Assert.AreNotEqual("Name validation skipped for minors", failure.ErrorMessage);
+    }
 }

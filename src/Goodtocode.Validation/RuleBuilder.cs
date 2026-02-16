@@ -116,4 +116,21 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         _condition = condition;
         return this;
     }
+
+    public RuleBuilder<T, TProp> When(Func<T, bool> condition, string? errorMessage = null)
+    {
+        _condition = condition;
+        if (errorMessage != null)
+        {
+            _rules.Add(instance =>
+            {
+                if (_condition != null && !_condition(instance))
+                {
+                    return new ValidationFailure(_propertyName, errorMessage);
+                }
+                return null;
+            });
+        }
+        return this;
+    }
 }
