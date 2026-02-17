@@ -3,14 +3,14 @@ using System.Linq.Expressions;
 
 namespace Goodtocode.Validation;
 
-public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string propertyName, List<Func<T, ValidationFailure?>> rules)
+public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string propertyName, List<Func<T, ValidationFailure?>> rules) : IRuleBuilder<T, TProp>
 {
     private readonly Expression<Func<T, TProp>> _selector = selector;
     private readonly string _propertyName = propertyName;
     private readonly List<Func<T, ValidationFailure?>> _rules = rules;
     private Func<T, bool>? _condition;
 
-    public RuleBuilder<T, TProp> NotEmpty(string? errorMessage = null)
+    public IRuleBuilder<T, TProp> NotEmpty(string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -37,7 +37,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> NotEqual(TProp other, string? errorMessage = null)
+    public IRuleBuilder<T, TProp> NotEqual(TProp other, string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -50,7 +50,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> Equal(TProp other, string? errorMessage = null)
+    public IRuleBuilder<T, TProp> Equal(TProp other, string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -63,7 +63,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> LessThanOrEqualTo(Func<T, TProp> otherSelector, string? errorMessage = null)
+    public IRuleBuilder<T, TProp> LessThanOrEqualTo(Func<T, TProp> otherSelector, string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -77,7 +77,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> GreaterThanOrEqualTo(Func<T, TProp> otherSelector, string? errorMessage = null)
+    public IRuleBuilder<T, TProp> GreaterThanOrEqualTo(Func<T, TProp> otherSelector, string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -91,7 +91,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> IsInEnum(string? errorMessage = null)
+    public IRuleBuilder<T, TProp> IsInEnum(string? errorMessage = null)
     {
         _rules.Add(instance =>
         {
@@ -111,13 +111,13 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> When(Func<T, bool> condition)
+    public IRuleBuilder<T, TProp> When(Func<T, bool> condition)
     {
         _condition = condition;
         return this;
     }
 
-    public RuleBuilder<T, TProp> When(Func<T, bool> condition, string? errorMessage = null)
+    public IRuleBuilder<T, TProp> Must(Func<T, bool> condition, string? errorMessage = null)
     {
         _condition = condition;
         if (errorMessage != null)

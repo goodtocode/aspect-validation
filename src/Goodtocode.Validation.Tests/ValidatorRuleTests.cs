@@ -139,13 +139,13 @@ public class ValidatorRuleTests
     }
 
     [TestMethod]
-    public void ValidateWhenWithErrorMessageReturnsCustomError()
+    public void ValidateMustWithErrorMessageReturnsCustomError()
     {
         // Rule: Name must not be empty, but if Age <= 18, return custom error
         var rules = new List<Func<TestEntity, ValidationFailure?>>();
         var builder = new RuleBuilder<TestEntity, string>(x => x.Name, nameof(TestEntity.Name), rules)
             .NotEmpty()
-            .When(x => x.Age > 18, "Name validation skipped for minors");
+            .Must(x => x.Age > 18, "Name validation skipped for minors");
 
         var entity = new TestEntity { Name = "", Age = 15 };
         // Should return the custom error message because Age <= 18
