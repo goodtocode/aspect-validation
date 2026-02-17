@@ -117,7 +117,7 @@ public class RuleBuilder<T, TProp>(Expression<Func<T, TProp>> selector, string p
         return this;
     }
 
-    public RuleBuilder<T, TProp> When(Func<T, bool> condition, string? errorMessage = null)
+    public RuleBuilder<T, TProp> Must(Func<T, bool> condition, string? errorMessage = null)
     {
         _condition = condition;
         if (errorMessage != null)
