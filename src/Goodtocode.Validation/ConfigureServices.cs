@@ -20,7 +20,6 @@ public static class ConfigureServices
         if (assemblies == null || assemblies.Length == 0)
             return services;
 
-        // Use HashSet to avoid scanning duplicates
         var assembliesToScan = new HashSet<Assembly>(assemblies);
         
         foreach (var assembly in assembliesToScan)
